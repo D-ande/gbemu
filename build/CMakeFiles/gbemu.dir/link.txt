@@ -1,0 +1,1 @@
+/usr/bin/g++ -g CMakeFiles/gbemu.dir/gbemu/main.cpp.o -o gbemu  -Wl,-rpath,/home/dalton/projects/gbemu/build/lib lib/libgbemulib.so 

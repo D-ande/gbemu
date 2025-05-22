@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/dalton/projects/gbemu/build",
+  "command": "/usr/bin/g++  -I/home/dalton/projects/gbemu/lib/include -g -o CMakeFiles/gbemu.dir/gbemu/main.cpp.o -c /home/dalton/projects/gbemu/gbemu/main.cpp",
+  "file": "/home/dalton/projects/gbemu/gbemu/main.cpp",
+  "output": "CMakeFiles/gbemu.dir/gbemu/main.cpp.o"
+},
+{
+  "directory": "/home/dalton/projects/gbemu/build/lib",
+  "command": "/usr/bin/g++ -Dgbemulib_EXPORTS -I/home/dalton/projects/gbemu/lib/include -g -fPIC -o CMakeFiles/gbemulib.dir/src/cart.cpp.o -c /home/dalton/projects/gbemu/lib/src/cart.cpp",
+  "file": "/home/dalton/projects/gbemu/lib/src/cart.cpp",
+  "output": "lib/CMakeFiles/gbemulib.dir/src/cart.cpp.o"
+}
+]
