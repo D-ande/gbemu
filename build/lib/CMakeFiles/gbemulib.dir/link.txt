@@ -1,1 +1,0 @@
-/usr/bin/g++ -fPIC -g -shared -Wl,-soname,libgbemulib.so -o libgbemulib.so CMakeFiles/gbemulib.dir/src/cart.cpp.o 
