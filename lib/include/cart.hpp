@@ -4,8 +4,7 @@
 #include <map>
 #include <vector>
 
-static const std::map<uint8_t, std::string> CART_TYPE
-{
+static const std::map<uint8_t, std::string> CART_TYPE = {
     {0x00,"ROM ONLY"},
     {0x01,"MBC1"},
     {0x02,"MBC1+RAM"},
@@ -37,7 +36,7 @@ static const std::map<uint8_t, std::string> CART_TYPE
     {0xFF, "HuC1+RAM+BATTERY"}
 };
 
-static const std::map<uint16_t, std::string> LIC_CODE {
+static const std::map<uint16_t, std::string> LIC_CODE = {
     {0x00, "None"},
     {0x01, "Nintendo R&D1"},
     {0x08, "Capcom"},
@@ -102,7 +101,7 @@ static const std::map<uint16_t, std::string> LIC_CODE {
 };
 
 //{hexVal, romBanks} romBanks * 16KiB - so 2 Banks = 32KiB or 32KiB * (1 << value)
-static const std::map<uint8_t, int> ROM_SIZE {
+static const std::map<uint8_t, int> ROM_SIZE = { //Dont actually need romsize due to calculation
     {0x00, 2},
     {0x01, 4},
     {0x02, 8},
@@ -119,7 +118,7 @@ static const std::map<uint8_t, int> ROM_SIZE {
 };
 
 //{hexVal, ramBanks} ramBanks * 8KiB so 4 Banks = 32KiB
-static const std::map<uint8_t, int> RAM_SIZE {
+static const std::map<uint8_t, int> RAM_SIZE = { //Dont actually need this map due to calculation
     {0x00, 0},
     {0x02, 1},
     {0x03, 4},
@@ -131,12 +130,12 @@ class Cart
 {
     struct cartHeader
     {
-        uint8_t entry[0x04];//4 bytes
+        uint8_t entry[4];//4 bytes
         uint8_t logo[0x30];
         
-        uint8_t title[0x10];
-        uint8_t manCode[0x04];
-        uint8_t cgbFlag;
+        uint8_t title[16];
+        //uint8_t manCode[0x04]; //Memory overlaps with title skipping for now because these 2 are only on color gameboy
+        //uint8_t cgbFlag;
         uint16_t licCode;
         uint8_t sgbFlag;
         uint8_t cartType;
@@ -164,4 +163,8 @@ public:
     std::string cartTypeName();
 
     std::string cartLicName();
+
+    std::string cartRamSize();
+
+    bool calcChecksum();
 };

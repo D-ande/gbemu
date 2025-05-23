@@ -4,6 +4,9 @@ set(PROJECT_NAME gbemu)
 
 project(${PROJECT_NAME})
 
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDAR_REQUIRED True)
+
 add_executable(${PROJECT_NAME}
     ${CMAKE_CURRENT_SOURCE_DIR}/gbemu/main.cpp
 )

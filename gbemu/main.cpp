@@ -16,14 +16,14 @@ int main(int argc, char* argv[])
     }
     else
     {
-        std::string fileName = argv[1];
+        fileName = argv[1];
     }
 
     Cart* cart = new Cart();
     
     try
     {
-        cart->loadCart(fileName);
+        return cart->loadCart(fileName);
     }
     catch(const std::exception& e)
     {
@@ -31,5 +31,4 @@ int main(int argc, char* argv[])
         return 0;
     }
     
-    return 1;
 }

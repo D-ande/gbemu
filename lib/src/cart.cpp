@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <exception>
+#include <format>
 
 #include "cart.hpp"
 
@@ -25,7 +27,7 @@ bool Cart::loadCart(std::string romName)
     if (inputFile.is_open())
     {
         m_romData.assign((std::istreambuf_iterator<char>(inputFile)), 
-                                    (std::istreambuf_iterator<char>())); //interators are a singlepass interator
+                                    (std::istreambuf_iterator<char>())); //iterators are a singlepass interator
 
         inputFile.close();
     }
@@ -51,27 +53,73 @@ bool Cart::loadCart(std::string romName)
         std::cerr << "Error parsing romHeader, romData is smaller than header size" << std::endl;
     }
 
-    printf("Cartridge Loaded:\n");
-    printf("\tTitle : %s\n", m_romHeader->title);
-    printf("\tType  : %2.2x (%s)\n", m_romHeader->cartType, cartTypeName().c_str());
+    std::cout << "Cartridge Loaded:" << std::endl;
+    std::cout << "\tTitle    : " << m_romHeader->title << std::endl;
+    std::cout << "\tType     : " << std::format("{:#x}", m_romHeader->cartType) << " (" << cartTypeName() << ")" << std::endl;
+    std::cout << "\tROM Size : " << std::format("{:#x}", m_romHeader->romSize) << " (" << 32 * (1 << m_romHeader->romSize) << " KiB)" << std::endl;
+    std::cout << "\tRAM Size : " << std::format("{:#x}", m_romHeader->ramSize) << " (" << cartRamSize() << " KiB)" << std::endl;
+    std::cout << "\tLIC Code : " << std::format("{:#x}", m_romHeader->licCode) << " (" << cartLicName() << ")" << std::endl;
+    std::cout << "\tROM Vers : " << std::format("{:d}", m_romHeader->romVersion) << std::endl;
+    std::cout << "\tChecksum : " << std::format("{:#x}", m_romHeader->checksum) << " (" << (calcChecksum() ? "PASSED" : "FAILED") << ")" << std::endl;
 
-    return true;
+    return calcChecksum();
 }
 
 std::string Cart::cartTypeName()
 {
-    if(m_romHeader->cartType < 0xFF)
+    std::string cartType{};
+    try
     {
-        return CART_TYPE.at(m_romHeader->cartType);
+        cartType = CART_TYPE.at(m_romHeader->cartType);
     }
-    return "UNKNOWN";
+    catch (std::out_of_range)
+    {
+        cartType = "UNKNOWN";
+    }
+    
+    return cartType;
 }
 
 std::string Cart::cartLicName()
 {
-    if(m_romHeader->licCode <= 0xA4)
+    std::string licCode{};
+    try
     {
-        return LIC_CODE.at(m_romHeader->licCode);
+        licCode = LIC_CODE.at(m_romHeader->licCode);
     }
-    return "UNKNOWN";
+    catch (std::out_of_range)
+    {
+        licCode = "UNKNOWN";
+    }
+    
+    return licCode;
+}
+
+std::string Cart::cartRamSize()
+{
+    std::string ramSize{};
+    try
+    {
+        ramSize = std::to_string(RAM_SIZE.at(m_romHeader->ramSize));
+    }
+    catch (std::out_of_range)
+    {
+        ramSize = "UNKNOWN";
+    }
+    
+    return ramSize;
+}
+
+bool Cart::calcChecksum()
+{
+    uint8_t checksum = 0;
+    for (uint16_t address = 0x0134; address <= 0x014C; address++)
+    {
+        checksum = checksum - m_romData[address] - 1;
+    }
+    
+    if(checksum == m_romHeader->checksum){
+        return true;
+    }
+    return false;
 }
