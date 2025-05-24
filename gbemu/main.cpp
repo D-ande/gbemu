@@ -1,6 +1,7 @@
 #include <iostream>
+#include <format>
 
-#include "cart.hpp"
+#include "emu.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -18,17 +19,24 @@ int main(int argc, char* argv[])
     {
         fileName = argv[1];
     }
+    
+    GbEmu* emu = new GbEmu(fileName);
 
-    Cart* cart = new Cart();
+    int res = 0;
     
     try
     {
-        return cart->loadCart(fileName);
+        res = emu->emuMain();
     }
     catch(const std::exception& e)
     {
+        emu->printTicks();
         std::cerr << e.what() << '\n';
+        delete emu;
         return 0;
     }
-    
+
+    delete emu;
+
+    return res;
 }

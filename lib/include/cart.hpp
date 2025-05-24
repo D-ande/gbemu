@@ -1,8 +1,6 @@
 #pragma once
 
-#include <cstdint>
-#include <map>
-#include <vector>
+#include "common.hpp"
 
 static const std::map<uint8_t, std::string> CART_TYPE = {
     {0x00,"ROM ONLY"},
@@ -126,28 +124,28 @@ static const std::map<uint8_t, int> RAM_SIZE = { //Dont actually need this map d
     {0x05, 8}
 };
 
+struct cartHeader
+{
+    uint8_t entry[4];//4 bytes
+    uint8_t logo[0x30];
+    
+    uint8_t title[16];
+    //uint8_t manCode[0x04]; //Memory overlaps with title skipping for now because these 2 are only on color gameboy
+    //uint8_t cgbFlag;
+    uint16_t licCode;
+    uint8_t sgbFlag;
+    uint8_t cartType;
+    uint8_t romSize;
+    uint8_t ramSize;
+    uint8_t dstCode;
+    uint8_t oldLicCode;
+    uint8_t romVersion;
+    uint8_t checksum;
+    uint16_t globalChecksum;
+};
+
 class Cart
 {
-    struct cartHeader
-    {
-        uint8_t entry[4];//4 bytes
-        uint8_t logo[0x30];
-        
-        uint8_t title[16];
-        //uint8_t manCode[0x04]; //Memory overlaps with title skipping for now because these 2 are only on color gameboy
-        //uint8_t cgbFlag;
-        uint16_t licCode;
-        uint8_t sgbFlag;
-        uint8_t cartType;
-        uint8_t romSize;
-        uint8_t ramSize;
-        uint8_t dstCode;
-        uint8_t oldLicCode;
-        uint8_t romVersion;
-        uint8_t checksum;
-        uint16_t globalChecksum;
-    };
-
     std::string m_filename;
     uint32_t m_romSize;
     std::vector<uint8_t> m_romData;
@@ -167,4 +165,10 @@ public:
     std::string cartRamSize();
 
     bool calcChecksum();
+
+    uint8_t cartRead(uint16_t);
+    void cartWrite(uint16_t, uint8_t);
+
+    std::vector<uint8_t> getRomData();
+    cartHeader getCartHeader();
 };

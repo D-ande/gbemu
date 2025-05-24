@@ -1,8 +1,4 @@
-#include <iostream>
 #include <fstream>
-#include <cstring>
-#include <exception>
-#include <format>
 
 #include "cart.hpp"
 
@@ -122,4 +118,14 @@ bool Cart::calcChecksum()
         return true;
     }
     return false;
+}
+
+std::vector<uint8_t> Cart::getRomData()
+{
+    return m_romData;
+}
+
+uint8_t Cart::cartRead(uint16_t addr)
+{
+    return m_romData[addr];
 }
