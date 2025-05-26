@@ -30,6 +30,7 @@ class CPU
 
     bool m_halted;
     bool m_stepping;
+    bool m_isDestMem;
 
 public:
     CPU(Bus*);
@@ -47,4 +48,10 @@ public:
     void execute();
 
     uint16_t readReg(RegType addr);
+    void setReg(RegType addr, uint16_t val);
 };
+
+#define CPU_FLAG_Z(cpu) BIT((CPU)m_regs.f, 7) //returns 1 or zero based on 7th bit value. Pass in cpu instance
+#define CPU_FLAG_N(cpu) BIT((CPU)m_regs.f, 6) //returns 1 or zero based on 6th bit value. Pass in cpu instance
+#define CPU_FLAG_H(cpu) BIT((CPU)m_regs.f, 5) //returns 1 or zero based on 5th bit value. Pass in cpu instance
+#define CPU_FLAG_C(cpu) BIT((CPU)m_regs.f, 4) //returns 1 or zero based on 4th bit value. Pass in cpu instance

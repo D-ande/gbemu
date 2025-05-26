@@ -1,5 +1,7 @@
 #pragma once
 
+#include <mutex>
+
 #include "common.hpp"
 #include "cpu.hpp"
 #include "cart.hpp"
@@ -16,10 +18,29 @@ class GbEmu
     int m_ticks = 0;
     int m_paused = false;
 
-public:
+    static GbEmu* instance;
+    static std::mutex mutex_;
+
     GbEmu(std::string);
+    GbEmu(const GbEmu&) = delete;
+    GbEmu& operator=(const GbEmu&) = delete;
+
+    int emuMain();
+
+public:
+
+    static GbEmu* getInstance(std::string fileName = "") {
+        if (instance == nullptr)
+        {
+            instance = new GbEmu(fileName);
+        }
+        return instance;
+    }
+
     ~GbEmu();
 
     void printTicks();
-    int emuMain();
+    void cycle(int);
+
+    friend int main(int argc, char** argv);
 };

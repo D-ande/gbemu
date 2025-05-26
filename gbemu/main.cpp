@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
         fileName = argv[1];
     }
     
-    GbEmu* emu = new GbEmu(fileName);
+    GbEmu* emu = GbEmu::getInstance(fileName);
 
     int res = 0;
     

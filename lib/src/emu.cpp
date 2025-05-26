@@ -1,5 +1,8 @@
 #include "emu.hpp"
 
+GbEmu* GbEmu::instance = nullptr;
+std::mutex GbEmu::mutex_;
+
 GbEmu::GbEmu(std::string fileName)
 {
     m_fileName = fileName;
@@ -33,7 +36,7 @@ int GbEmu::emuMain()
         {
             throw std::runtime_error("Error while processing cpu step");
         }
-        
+
         m_ticks++;
     }
 
@@ -42,5 +45,16 @@ int GbEmu::emuMain()
 
 void GbEmu::printTicks()
 {
+    mutex_.lock();
     std::cout << "Ticks: " << m_ticks << std::endl;
+    mutex_.unlock();
+}
+
+void GbEmu::cycle(int cycles)
+{
+    mutex_.lock();
+    // Do something about cycling ppu and other things?
+    // std::cout << "Emu has been locked for cycle" << std::endl;
+
+    mutex_.unlock();
 }
