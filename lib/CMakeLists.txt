@@ -7,6 +7,7 @@ set(TARGET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/cpu.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/cart.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/bus.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/cpu_proc.cpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/emu.cpp
 )
